@@ -1,0 +1,11 @@
+extends layout
+
+block content 
+
+    div.container
+        each item in categories
+            div.row.m-4
+                a.col-lg.btn.btn-lg.btn-outline-dark(type = 'button', href= '/' + item)= item
+
+
+
