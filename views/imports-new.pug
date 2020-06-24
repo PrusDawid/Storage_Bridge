@@ -1,0 +1,67 @@
+extends layout
+
+block content
+    div.card.m-4
+        div.card-body
+            h2.card-title.text-center Import
+            div.row
+                button#collapseFileAct.col.btn.btn-warning(type= 'button' ) File
+                button#collapseLinkAct.col.btn.btn-secondary(type= 'button'  ) Link
+
+            div#collapseFileShown.collapse.m-4
+                div.card.card-body
+                    form(action = '/file_xml_upload' encType="multipart/form-data" method = 'POST')
+                        div.custom-control.mb-4
+                            select#warehouse_form.custom-select(name = 'warehouse')
+                                each item in warehouses
+                                    option= item
+
+                        div.custom-control.mb-4.ml-4
+                            input#file_form.custom-file-input(type= "file", accept = ".xml"  name = 'file')
+                            label#file_label.custom-file-label Choose XML file
+
+                        div.custom-control.custom-checkbox.mb-4.ml-4
+                            input#newprimary_form.custom-control-input(type = 'checkbox' name = 'new_primary')
+                            label.custom-control-label(for= 'newprimary_form') Select as new primary file
+
+                        
+                        button#submitbutton.btn.btn-large.btn-primary.ml-4(type="button") 
+                            | Submit
+                        
+                        if (successMessage.length)
+                            div.alert.alert-success.mt-4 #{successMessage}
+                        if (errorMessage.length)
+                            div.alert.alert-danger.mt-4 #{errorMessage}
+            
+            div#collapseLinkShown.collapse.m-4
+                div.card.card-body
+                    form(action = '/url_xml_upload' encType="multipart/form-data" method = 'POST')
+                        div.custom-control.mb-4.ml-4
+                            input#file_form.custom-control-input(name = 'url')
+                            label#file_label.custom-control-label Url to XML file
+
+    div.card.m-4
+        div.card-body
+
+    script.
+        $('#collapseFileShown').addClass('show')
+        $('#collapseFileAct').on('click', function () {
+            $('#collapseLinkShown').collapse('hide')
+            $('#collapseFileShown').collapse('show')
+
+
+        });
+        $('#collapseLinkAct').on('click', function () {
+            $('#collapseFileShown').collapse('hide')
+            $('#collapseLinkShown').collapse('show')
+
+        })
+        $("#file_form").on('change', function() {
+            var filename = $(this).val().replace("C:\\fakepath\\", '')
+            $('#file_label').text(filename)
+        })
+        $('#submitbutton').on('click', function() {
+            $(this).text('Loading ...')
+            $(this).prop('disabled', true)
+            $('form').submit()
+        })

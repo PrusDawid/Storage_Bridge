@@ -2,27 +2,15 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.render('home', {
-        title: 'Storage Bridge',
-        categories: ['imports', 'exports', 'settings']
-    });
-})
-router.get('/imports', (req, res) => {
-    res.render('imports', {
-        title: 'Imports',
-        warehouses: ['Fen', 'Second', 'Third', 'Next']
-    })
-})
-router.get('/exports', (req, res) => {
-    //res.render('exports')
-    res.send('exports')
-})
-router.get('/settings', (req, res) => {
-    //res.render('settings')
-    res.send('settings')
-})
+const PagesController = require('../controllers/PagesController')
+const XMLFileController = require('../controllers/XMLController')
 
+router.get('/',PagesController.home);
 
+router.get('/imports', PagesController.imports)
+router.get('/exports', PagesController.exports)
+router.get('/settings', PagesController.settings)
+
+router.post('/file_xml_upload', XMLFileController.storeFile)
 
 module.exports = router;

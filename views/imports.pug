@@ -4,17 +4,28 @@ block content
 
     div.container.row.mt-2.mb-2
         each item in warehouses
-            div.card.col-lg-4.col-md-6.col-sm-12
+            div.card.col-lg-6.col-md-6.col-sm-12
                 div.card-body
                     h3.card-title.text-center= item 
                     div.card.m-4
                         div.card-body
                             h5.card-title.text-center FROM URL
-                            input.form-control.text-center(type="text", placeholder= 'http://' id= `${item}` )
+                            input.form-control.text-center(type="text", placeholder= 'http://' id= `${item}-input-link` )
                     
                     div.card.m-4
                         div.card-body
                             h5.card-title.text-center FROM FILE
                             div.custom-file
-                                input.custom-file-input(type= "file", accept = ".xml" )
-                                label.custom-file-label XML
+                                input.custom-file-input(type= "file", accept = ".xml" id= `${item}-input-file` )
+                                label.custom-file-label(id=`${item}-label-file` ) XML
+
+        script.
+            $(".custom-file-input").on('change', function() {
+                var id = $(this).attr('id').replace("-input-file", '');
+                var filename = $(this).val().replace("C:\\fakepath\\", '')
+                var elem = '#' + id + '-label-file'
+                $(elem).text(filename)
+                
+                console.log(id, filename, elem);
+            })
+
